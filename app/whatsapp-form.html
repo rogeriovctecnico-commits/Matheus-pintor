@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Formulário de Orçamento - Matheus Cunha</title>
+
+	<!-- CSS EMBUTIDO - FUNCIONARÁ COM CERTEZA -->
+	<style>
+		/* ===================
+           RESET E BASE
+           =================== */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+			min-height: 100vh;
+			padding: 2rem 1rem;
+		}
+
+		.form-container {
+			max-width: 600px;
+			margin: 0 auto;
+			background: white;
+			border-radius: 15px;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+			animation: fadeIn 0.6s ease;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.form-container h2 {
+			background: linear-gradient(135deg, #25D366, #128C7E);
+			color: white;
+			text-align: center;
+			padding: 2rem;
+			margin: 0;
+			font-size: 1.8rem;
+			font-weight: 600;
+		}
+
+		.whatsapp-form {
+			padding: 2rem;
+		}
+
+		.form-group {
+			margin-bottom: 1.5rem;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+			color: #333;
+			font-size: 0.95rem;
+		}
+
+		.form-group input,
+		.form-group select,
+		.form-group textarea {
+			width: 100%;
+			padding: 0.75rem;
+			border: 2px solid #e0e0e0;
+			border-radius: 8px;
+			font-size: 1rem;
+			transition: border-color 0.3s ease, box-shadow 0.3s ease;
+			background-color: #fafafa;
+			font-family: inherit;
+		}
+
+		.form-group input:focus,
+		.form-group select:focus,
+		.form-group textarea:focus {
+			outline: none;
+			border-color: #25D366;
+			box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+			background-color: white;
+		}
+
+		.form-group input.error,
+		.form-group select.error,
+		.form-group textarea.error {
+			border-color: #e74c3c;
+			background-color: #fdf2f2;
+		}
+
+		.error-message {
+			display: block;
+			color: #e74c3c;
+			font-size: 0.85rem;
+			margin-top: 0.25rem;
+			min-height: 1.2rem;
+		}
+
+		.help-text {
+			display: block;
+			color: #666;
+			font-size: 0.8rem;
+			margin-top: 0.25rem;
+		}
+
+		.char-counter {
+			display: block;
+			text-align: right;
+			color: #666;
+			font-size: 0.8rem;
+			margin-top: 0.25rem;
+		}
+
+		/* Radio buttons customizados */
+		.radio-group {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			margin-top: 0.5rem;
+		}
+
+		.radio-label {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			font-weight: normal;
+			margin-bottom: 0;
+		}
+
+		.radio-label input[type="radio"] {
+			display: none;
+		}
+
+		.radio-custom {
+			width: 20px;
+			height: 20px;
+			border: 2px solid #ddd;
+			border-radius: 50%;
+			margin-right: 0.75rem;
+			position: relative;
+			transition: all 0.3s ease;
+		}
+
+		.radio-label input[type="radio"]:checked+.radio-custom {
+			border-color: #25D366;
+			background-color: #25D366;
+		}
+
+		.radio-label input[type="radio"]:checked+.radio-custom::after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 8px;
+			height: 8px;
+			background-color: white;
+			border-radius: 50%;
+		}
+
+		/* Checkbox customizado */
+		.checkbox-label {
+			display: flex;
+			align-items: flex-start;
+			cursor: pointer;
+			font-weight: normal;
+			margin-bottom: 0;
+			line-height: 1.4;
+		}
+
+		.checkbox-label input[type="checkbox"] {
+			display: none;
+		}
+
+		.checkbox-custom {
+			width: 20px;
+			height: 20px;
+			border: 2px solid #ddd;
+			border-radius: 4px;
+			margin-right: 0.75rem;
+			margin-top: 0.1rem;
+			position: relative;
+			transition: all 0.3s ease;
+			flex-shrink: 0;
+		}
+
+		.checkbox-label input[type="checkbox"]:checked+.checkbox-custom {
+			border-color: #25D366;
+			background-color: #25D366;
+		}
+
+		.checkbox-label input[type="checkbox"]:checked+.checkbox-custom::after {
+			content: '✓';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: white;
+			font-weight: bold;
+			font-size: 0.8rem;
+		}
+
+		/* Botões */
+		.form-actions {
+			display: flex;
+			gap: 1rem;
+			margin-top: 2rem;
+		}
+
+		.btn-submit,
+		.btn-reset {
+			padding: 0.875rem 1.5rem;
+			border: none;
+			border-radius: 8px;
+			font-size: 1rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
+			font-family: inherit;
+		}
+
+		.btn-submit {
+			background: linear-gradient(135deg, #25D366, #128C7E);
+			color: white;
+			flex: 2;
+		}
+
+		.btn-submit:hover {
+			background: linear-gradient(135deg, #128C7E, #25D366);
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+		}
+
+		.btn-submit:disabled {
+			background: #ccc;
+			cursor: not-allowed;
+			transform: none;
+			box-shadow: none;
+		}
+
+		.btn-reset {
+			background: #f8f9fa;
+			color: #666;
+			border: 2px solid #e0e0e0;
+			flex: 1;
+		}
+
+		.btn-reset:hover {
+			background: #e9ecef;
+			border-color: #ccc;
+		}
+
+		.btn-back {
+			background: #6c757d;
+			color: white;
+			padding: 0.75rem 1.5rem;
+			border: none;
+			border-radius: 8px;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+			transition: all 0.3s ease;
+		}
+
+		.btn-back:hover {
+			background: #5a6268;
+			color: white;
+			transform: translateY(-1px);
+		}
+
+		/* Status do formulário */
+		.form-status {
+			margin-top: 1rem;
+			padding: 1rem;
+			border-radius: 8px;
+			text-align: center;
+			font-weight: 600;
+			display: none;
+		}
+
+		.form-status.success {
+			background-color: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+			display: block;
+		}
+
+		.form-status.error {
+			background-color: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+			display: block;
+		}
+
+		.form-status.loading {
+			background-color: #d1ecf1;
+			color: #0c5460;
+			border: 1px solid #bee5eb;
+			display: block;
+		}
+
+		/* Loading spinner */
+		.loading-spinner {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			border: 3px solid rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			border-top-color: white;
+			animation: spin 1s ease-in-out infinite;
+		}
+
+		@keyframes spin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		/* Responsive */
+		@media (max-width: 768px) {
+			body {
+				padding: 1rem 0.5rem;
+			}
+
+			.form-container h2 {
+				font-size: 1.5rem;
+				padding: 1.5rem;
+			}
+
+			.whatsapp-form {
+				padding: 1.5rem;
+			}
+
+			.form-actions {
+				flex-direction: column;
+			}
+
+			.radio-group {
+				gap: 0.75rem;
+			}
+		}
+
+		@media (max-width: 480px) {
+			body {
+				padding: 0.5rem;
+			}
+
+			.form-container h2 {
+				font-size: 1.3rem;
+				padding: 1rem;
+			}
+
+			.whatsapp-form {
+				padding: 1rem;
+			}
+		}
+	</style>
+
+	<!-- Font Awesome para ícones -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+	<!-- Botão voltar -->
+	<div style="max-width: 600px; margin: 0 auto;">
+		<a href="index.html" class="btn-back">
+			<i class="fas fa-arrow-left"></i>
+			Voltar ao Site
+		</a>
+	</div>
+
+	<!-- FORMULÁRIO DE CADASTRO -->
+	<div class="form-container">
+		<h2>
+			<i class="fab fa-whatsapp"></i>
+			Solicitar Orçamento
+		</h2>
+
+		<form id="whatsappForm" class="whatsapp-form">
+
+			<!-- Nome Completo -->
+			<div class="form-group">
+				<label for="nomeCompleto">Nome Completo *</label>
+				<input type="text" id="nomeCompleto" name="nomeCompleto" required placeholder="Seu nome completo"
+					minlength="2" maxlength="100">
+				<span class="error-message" id="nomeError"></span>
+			</div>
+
+			<!-- Telefone -->
+			<div class="form-group">
+				<label for="telefone">WhatsApp (com DDD) *</label>
+				<input type="tel" id="telefone" name="telefone" required placeholder="(11) 99999-9999" maxlength="20">
+				<span class="error-message" id="telefoneError"></span>
+				<small class="help-text">Formato: (11) 99999-9999</small>
+			</div>
+
+			<!-- Email -->
+			<div class="form-group">
+				<label for="email">E-mail (opcional)</label>
+				<input type="email" id="email" name="email" placeholder="seu@email.com" maxlength="100">
+				<span class="error-message" id="emailError"></span>
+			</div>
+
+			<!-- Tipo de Serviço -->
+			<div class="form-group">
+				<label for="tipoServico">Tipo de Serviço *</label>
+				<select id="tipoServico" name="tipoServico" required>
+					<option value="">Selecione o serviço</option>
+					<option value="pintura-fachada">Pintura de Fachada</option>
+					<option value="pintura-interna">Pintura Interna</option>
+					<option value="reforma-completa">Reforma Completa</option>
+					<option value="consultoria">Consultoria</option>
+					<option value="outro">Outro</option>
+				</select>
+				<span class="error-message" id="servicoError"></span>
+			</div>
+
+			<!-- Endereço -->
+			<div class="form-group">
+				<label for="endereco">Endereço (Cidade/Bairro)</label>
+				<input type="text" id="endereco" name="endereco" placeholder="Belo Horizonte - Centro" maxlength="150">
+			</div>
+
+			<!-- Mensagem -->
+			<div class="form-group">
+				<label for="mensagem">Detalhes do Projeto</label>
+				<textarea id="mensagem" name="mensagem" rows="4" placeholder="Descreva brevemente seu projeto..."
+					maxlength="500"></textarea>
+				<small class="char-counter">0/500 caracteres</small>
+			</div>
+
+			<!-- Preferência de Contato -->
+			<div class="form-group">
+				<label>Melhor horário para contato:</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" name="horarioContato" value="manha" checked>
+						<span class="radio-custom"></span>
+						Manhã (8h-12h)
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="horarioContato" value="tarde">
+						<span class="radio-custom"></span>
+						Tarde (13h-17h)
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="horarioContato" value="noite">
+						<span class="radio-custom"></span>
+						Noite (18h-20h)
+					</label>
+				</div>
+			</div>
+
+			<!-- Termos -->
+			<div class="form-group">
+				<label class="checkbox-label">
+					<input type="checkbox" id="aceitaTermos" name="aceitaTermos" required>
+					<span class="checkbox-custom"></span>
+					Aceito receber contato via WhatsApp e concordo com a política de privacidade *
+				</label>
+				<span class="error-message" id="termosError"></span>
+			</div>
+
+			<!-- Botões -->
+			<div class="form-actions">
+				<button type="submit" class="btn-submit" id="submitBtn">
+					<i class="fab fa-whatsapp"></i>
+					Enviar via WhatsApp
+				</button>
+				<button type="reset" class="btn-reset">
+					<i class="fas fa-redo"></i>
+					Limpar
+				</button>
+			</div>
+
+			<!-- Status do envio -->
+			<div id="formStatus" class="form-status"></div>
+		</form>
+	</div>
+
+	<!-- JAVASCRIPT EMBUTIDO -->
+	<script>
+		// Configurações
+		const config = {
+			businessPhone: '5531971541590', // telefone do negócio para receber mensagens
+			validation: {
+				phoneRegex: /^[\+]?[1-9][\d]{0,15}$/,
+				emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+				nameMinLength: 2
+			}
+		};
+
+		// Elementos do DOM
+		const form = document.getElementById('whatsappForm');
+		const submitBtn = document.getElementById('submitBtn');
+		const formStatus = document.getElementById('formStatus');
+
+		// Inicialização
+		document.addEventListener('DOMContentLoaded', function () {
+			setupEventListeners();
+			setupCharCounter();
+			setupPhoneMask();
+		});
+
+		// Event Listeners
+		function setupEventListeners() {
+			form.addEventListener('submit', handleSubmit);
+			form.addEventListener('reset', handleReset);
+
+			// Validação em tempo real
+			const inputs = form.querySelectorAll('input, select, textarea');
+			inputs.forEach(input => {
+				input.addEventListener('blur', () => validateField(input));
+				input.addEventListener('input', () => clearFieldError(input));
+			});
+		}
+
+		// Contador de caracteres
+		function setupCharCounter() {
+			const mensagemTextarea = document.getElementById('mensagem');
+			const charCounter = document.querySelector('.char-counter');
+
+			mensagemTextarea.addEventListener('input', () => {
+				const currentLength = mensagemTextarea.value.length;
+				const maxLength = mensagemTextarea.getAttribute('maxlength');
+				charCounter.textContent = `${currentLength}/${maxLength} caracteres`;
+
+				if (currentLength > maxLength * 0.9) {
+					charCounter.style.color = '#e74c3c';
+				} else {
+					charCounter.style.color = '#666';
+				}
+			});
+		}
+
+		// Máscara para telefone
+		function setupPhoneMask() {
+			const phoneInput = document.getElementById('telefone');
+			phoneInput.addEventListener('input', (e) => {
+				let value = e.target.value.replace(/\D/g, '');
+
+				if (value.length <= 11) {
+					value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+					value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+					value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+					value = value.replace(/^(\d*)/, '($1');
+				}
+
+				e.target.value = value;
+			});
+		}
+
+		// Manipular submissão
+		function handleSubmit(e) {
+			e.preventDefault();
+
+			if (!validateForm()) {
+				showStatus('Por favor, corrija os erros antes de continuar.', 'error');
+				return;
+			}
+
+			const formData = collectFormData();
+			setLoading(true);
+
+			setTimeout(() => {
+				sendViaWhatsApp(formData);
+				setLoading(false);
+			}, 1000);
+		}
+
+		// Coletar dados do formulário
+		function collectFormData() {
+			const formData = new FormData(form);
+			const data = {};
+
+			for (let [key, value] of formData.entries()) {
+				data[key] = value;
+			}
+
+			data.telefone = cleanPhone(data.telefone);
+			data.timestamp = new Date().toLocaleString('pt-BR');
+
+			return data;
+		}
+
+		// Enviar via WhatsApp
+		function sendViaWhatsApp(data) {
+			const message = formatMessage(data);
+			const encodedMessage = encodeURIComponent(message);
+			const whatsappUrl = `https://wa.me/${data.telefone}?text=${encodedMessage}`;
+
+			// Abrir WhatsApp do cliente
+			window.open(whatsappUrl, '_blank');
+
+			// Enviar para seu número
+			setTimeout(() => {
+				const businessMessage = formatBusinessMessage(data);
+				const encodedBusinessMessage = encodeURIComponent(businessMessage);
+				const businessUrl = `https://wa.me/${config.businessPhone}?text=${encodedBusinessMessage}`;
+				window.open(businessUrl, '_blank');
+			}, 1500);
+
+			showStatus('Redirecionando para o WhatsApp...', 'success');
+
+			setTimeout(() => {
+				form.reset();
+				showStatus('Formulário enviado com sucesso!', 'success');
+			}, 3000);
+		}
+
+		// Formatar mensagem para cliente
+		function formatMessage(data) {
+			const servicoTexto = getServicoTexto(data.tipoServico);
+			const horarioTexto = getHorarioTexto(data.horarioContato);
+
+			let message = `🎨 *Olá ${data.nomeCompleto}!*\n\n`;
+			message += `Obrigado por entrar em contato conosco!\n\n`;
+			message += `📋 *Resumo do seu interesse:*\n`;
+			message += `• *Serviço:* ${servicoTexto}\n`;
+
+			if (data.endereco) {
+				message += `• *Local:* ${data.endereco}\n`;
+			}
+
+			message += `• *Melhor horário:* ${horarioTexto}\n\n`;
+
+			if (data.mensagem) {
+				message += `💬 *Detalhes:* ${data.mensagem}\n\n`;
+			}
+
+			message += `✅ Em breve entraremos em contato para agendar uma visita e elaborar seu orçamento personalizado.\n\n`;
+			message += `🏠 *Matheus Cunha - Pinturas e Reformas*\n`;
+			message += `📱 Transformando ideias em realidade desde 2016`;
+
+			return message;
+		}
+
+		// Formatar mensagem para negócio
+		function formatBusinessMessage(data) {
+			const servicoTexto = getServicoTexto(data.tipoServico);
+			const horarioTexto = getHorarioTexto(data.horarioContato);
+
+			let message = `🔔 *NOVO LEAD - FORMULÁRIO SITE*\n\n`;
+			message += `👤 *Cliente:* ${data.nomeCompleto}\n`;
+			message += `📱 *WhatsApp:* ${data.telefone}\n`;
+
+			if (data.email) {
+				message += `📧 *E-mail:* ${data.email}\n`;
+			}
+
+			message += `�� *Serviço:* ${servicoTexto}\n`;
+
+			if (data.endereco) {
+				message += `📍 *Local:* ${data.endereco}\n`;
+			}
+
+			message += `⏰ *Horário preferido:* ${horarioTexto}\n`;
+			message += `📅 *Data:* ${data.timestamp}\n\n`;
+
+			if (data.mensagem) {
+				message += `💬 *Detalhes do projeto:*\n${data.mensagem}\n\n`;
+			}
+
+			message += `🚀 *Ação necessária:* Entrar em contato para agendar visita`;
+
+			return message;
+		}
+
+		// Funções auxiliares
+		function getServicoTexto(codigo) {
+			const servicos = {
+				'pintura-fachada': 'Pintura de Fachada',
+				'pintura-interna': 'Pintura Interna',
+				'reforma-completa': 'Reforma Completa',
+				'consultoria': 'Consultoria',
+				'outro': 'Outro serviço'
+			};
+			return servicos[codigo] || 'Não especificado';
+		}
+
+		function getHorarioTexto(codigo) {
+			const horarios = {
+				'manha': 'Manhã (8h-12h)',
+				'tarde': 'Tarde (13h-17h)',
+				'noite': 'Noite (18h-20h)'
+			};
+			return horarios[codigo] || 'Não especificado';
+		}
+
+		function cleanPhone(phone) {
+			return phone.replace(/\D/g, '');
+		}
+
+		function validateForm() {
+			let isValid = true;
+
+			const requiredFields = ['nomeCompleto', 'telefone', 'tipoServico'];
+
+			requiredFields.forEach(fieldName => {
+				const field = document.getElementById(fieldName);
+				if (!validateField(field)) {
+					isValid = false;
+				}
+			});
+
+			if (!validateTerms()) {
+				isValid = false;
+			}
+
+			return isValid;
+		}
+
+		function validateField(field) {
+			const value = field.value.trim();
+			const fieldName = field.name;
+			let isValid = true;
+			let errorMessage = '';
+
+			switch (fieldName) {
+				case 'nomeCompleto':
+					if (!value) {
+						errorMessage = 'Nome é obrigatório';
+						isValid = false;
+					} else if (value.length < config.validation.nameMinLength) {
+						errorMessage = `Nome deve ter pelo menos ${config.validation.nameMinLength} caracteres`;
+						isValid = false;
+					}
+					break;
+
+				case 'telefone':
+					if (!value) {
+						errorMessage = 'Telefone é obrigatório';
+						isValid = false;
+					} else {
+						const cleanPhone = value.replace(/\D/g, '');
+						if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+							errorMessage = 'Telefone deve ter entre 10 e 15 dígitos';
+							isValid = false;
+						}
+					}
+					break;
+
+				case 'email':
+					if (value && !config.validation.emailRegex.test(value)) {
+						errorMessage = 'E-mail inválido';
+						isValid = false;
+					}
+					break;
+
+				case 'tipoServico':
+					if (!value) {
+						errorMessage = 'Selecione um tipo de serviço';
+						isValid = false;
+					}
+					break;
+			}
+
+			showFieldError(field, errorMessage);
+			return isValid;
+		}
+
+		function validateTerms() {
+			const checkbox = document.getElementById('aceitaTermos');
+			const isValid = checkbox.checked;
+
+			if (!isValid) {
+				showFieldError(checkbox, 'Você deve aceitar os termos para continuar');
+			} else {
+				clearFieldError(checkbox);
+			}
+
+			return isValid;
+		}
+
+		function showFieldError(field, message) {
+			const errorElement = document.getElementById(field.name + 'Error') ||
+				document.getElementById(field.id + 'Error');
+
+			if (errorElement) {
+				errorElement.textContent = message;
+				field.classList.toggle('error', !!message);
+			}
+		}
+
+		function clearFieldError(field) {
+			showFieldError(field, '');
+		}
+
+		function handleReset() {
+			const errorElements = form.querySelectorAll('.error-message');
+			errorElements.forEach(el => el.textContent = '');
+
+			const errorFields = form.querySelectorAll('.error');
+			errorFields.forEach(field => field.classList.remove('error'));
+
+			formStatus.style.display = 'none';
+
+			const charCounter = document.querySelector('.char-counter');
+			if (charCounter) {
+				charCounter.textContent = '0/500 caracteres';
+				charCounter.style.color = '#666';
+			}
+		}
+
+		function setLoading(isLoading) {
+			submitBtn.disabled = isLoading;
+
+			if (isLoading) {
+				submitBtn.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    Enviando...
+                `;
+				showStatus('Preparando mensagem...', 'loading');
+			} else {
+				submitBtn.innerHTML = `
+                    <i class="fab fa-whatsapp"></i>
+                    Enviar via WhatsApp
+                `;
+			}
+		}
+
+		function showStatus(message, type) {
+			formStatus.textContent = message;
+			formStatus.className = `form-status ${type}`;
+			formStatus.style.display = 'block';
+
+			if (type === 'success') {
+				setTimeout(() => {
+					formStatus.style.display = 'none';
+				}, 5000);
+			}
+		}
+	</script>
+</body>
+
+</html>

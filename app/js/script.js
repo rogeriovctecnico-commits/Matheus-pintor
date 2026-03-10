@@ -688,3 +688,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Modal de imagens inicializado com sucesso!");
 });
+// Adicionar ao seu script.js existente
+
+/**
+ * Funcionalidades para links do WhatsApp
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  // Rastrear cliques nos links do WhatsApp
+  const whatsappLinks = document.querySelectorAll(
+    '[href*="formulario-whatsapp"]',
+  );
+
+  whatsappLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      // Analytics (opcional)
+      if (typeof gtag !== "undefined") {
+        gtag("event", "click", {
+          event_category: "WhatsApp",
+          event_label: "Formulário",
+          value: 1,
+        });
+      }
+
+      console.log("Link WhatsApp clicado:", this.href);
+    });
+  });
+
+  // Adicionar parâmetros URL se necessário
+  const projectLinks = document.querySelectorAll('[href*="?projeto="]');
+
+  projectLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      // Adicionar informações extras na URL
+      const url = new URL(this.href);
+      url.searchParams.set("source", "galeria");
+      url.searchParams.set("timestamp", Date.now());
+      this.href = url.toString();
+    });
+  });
+
+  // Animação do botão flutuante
+  const floatBtn = document.querySelector(".whatsapp-float-btn");
+  if (floatBtn) {
+    // Mostrar/esconder baseado no scroll
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        floatBtn.style.opacity = "1";
+        floatBtn.style.transform = "scale(1)";
+      } else {
+        floatBtn.style.opacity = "0.7";
+        floatBtn.style.transform = "scale(0.8)";
+      }
+
+      lastScrollY = window.scrollY;
+    });
+  }
+});
