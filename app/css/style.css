@@ -1453,40 +1453,40 @@ nav ul li a[href*="orcamento"]::before {
 	margin-right: 0.5rem;
 }
 
-/* ===================
-   VERSÃO ALTERNATIVA SEM ÍCONES EMOJI
-   =================== */
-
+/* =================== */
+/* VERSÃO ALTERNATIVA SEM ÍCONES EMOJI */
+/* =================== */
+*/
 /* Se preferir usar Font Awesome, descomente e ajuste: */
-/*
+
 nav ul li a[href="#sobre"]::before {
-    font-family: "Font Awesome 6 Free";
-    content: "\f007"; 
-    font-weight: 900;
-    margin-right: 0.5rem;
+	font-family: "Font Awesome 6 Free";
+	content: "\f007";
+	font-weight: 900;
+	margin-right: 0.5rem;
 }
 
 nav ul li a[href="#trabalhos"]::before {
-    font-family: "Font Awesome 6 Free";
-    content: "\f015";
-    font-weight: 900;
-    margin-right: 0.5rem;
+	font-family: "Font Awesome 6 Free";
+	content: "\f015";
+	font-weight: 900;
+	margin-right: 0.5rem;
 }
 
 nav ul li a[href="#contato"]::before {
-    font-family: "Font Awesome 6 Free";
-    content: "\f095";
-    font-weight: 900;
-    margin-right: 0.5rem;
+	font-family: "Font Awesome 6 Free";
+	content: "\f095";
+	font-weight: 900;
+	margin-right: 0.5rem;
 }
 
 nav ul li a[href*="formulario-whatsapp"]::before {
-    font-family: "Font Awesome 6 Brands";
-    content: "\f232";
-    font-weight: 900;
-    margin-right: 0.5rem;
+	font-family: "Font Awesome 6 Brands";
+	content: "\f232";
+	font-weight: 900;
+	margin-right: 0.5rem;
 }
-*/
+
 
 /* ===================
    RESPONSIVE DESIGN
@@ -1555,6 +1555,13 @@ nav ul li a[href*="formulario-whatsapp"]::before {
 		min-width: auto;
 		width: 100%;
 	}
+}
+
+.profile-image {
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 /* ===================
